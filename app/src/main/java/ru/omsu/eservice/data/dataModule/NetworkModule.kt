@@ -19,6 +19,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.omsu.eservice.data.remote.common.ResultCallAdapterFactory
 import ru.omsu.eservice.data.remote.common.interceptor.GetDataFromHeaderInterceptor
+import ru.omsu.eservice.data.remote.common.interceptor.HandleErrorLoginInterceptor
 import ru.omsu.eservice.data.remote.login.repository.EServiceApi
 import java.net.CookieManager
 import java.net.CookiePolicy
@@ -43,6 +44,7 @@ class NetworkModule {
     fun provideOkHttpClient(
         cookieManager: CookieManager,
         @Named("GetDataFromHeaderInterceptor") getDataFromHeaderInterceptor: Interceptor,
+        @Named("HandleErrorLoginInterceptor") handleErrorLoginInterceptor: Interceptor,
         sslContext: SSLContext,
         trustAllCerts: Array<TrustManager>
     ) =
@@ -54,6 +56,7 @@ class NetworkModule {
                         HttpLoggingInterceptor.Level.BODY
                 })
             .addInterceptor(getDataFromHeaderInterceptor)
+            .addInterceptor(handleErrorLoginInterceptor)
             .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
             .build()
 
@@ -90,6 +93,12 @@ class NetworkModule {
     @Provides
     fun provideGetDataFromHeaderInterceptor(): Interceptor =
         GetDataFromHeaderInterceptor()
+
+    @Named("HandleErrorLoginInterceptor")
+    @Singleton
+    @Provides
+    fun provideHandleErrorLoginInterceptor(): Interceptor =
+        HandleErrorLoginInterceptor()
 
     @Singleton
     @Provides

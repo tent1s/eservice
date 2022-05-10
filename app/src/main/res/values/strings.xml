@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">EService</string>
+    <string name="login">Войти</string>
+    <string name="password">Пароль</string>
+    <string name="email">E-mail</string>
+    <string name="enter">Вход</string>
+    <string name="invalid_email">Невалидный email</string>
+    <string name="invalid_password">Невалидный пароль</string>
+    <string name="auth_error">Неверный логин или пароль</string>
 </resources>

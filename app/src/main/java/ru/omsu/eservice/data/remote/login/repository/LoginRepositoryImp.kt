@@ -19,7 +19,6 @@ class LoginRepositoryImp @Inject constructor(
         val csrf = getCsrfToken()
         return if (csrf is Either.Success) {
             EServiceApi.login("$login@eservice", password, csrf.data)
-            EServiceApi.loginBackend()
         } else {
             csrf.map {}
         }

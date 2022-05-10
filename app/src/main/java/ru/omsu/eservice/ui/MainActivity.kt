@@ -4,10 +4,10 @@ import android.os.Bundle
 import com.github.terrakok.cicerone.Command
 import com.github.terrakok.cicerone.Replace
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import dagger.hilt.android.AndroidEntryPoint
 import ru.omsu.eservice.R
+import dagger.hilt.android.AndroidEntryPoint
 import ru.omsu.eservice.ui.common.BaseNavigationActivity
-import ru.omsu.eservice.ui.screen.Screens.searchBooksScreen
+import ru.omsu.eservice.ui.screen.Screens.splashScreen
 
 
 @AndroidEntryPoint
@@ -21,7 +21,7 @@ class MainActivity : BaseNavigationActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null)
-            navigator.applyCommands(arrayOf<Command>(Replace(searchBooksScreen())))
+            navigator.applyCommands(arrayOf<Command>(Replace(splashScreen())))
     }
 
 }
