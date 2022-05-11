@@ -7,4 +7,5 @@
     <color name="orange">#FF8400</color>
     <color name="textDark">#DE000000</color>
     <color name="gray">#dedede</color>
+    <color name="grayLight">#f1ffff</color>
 </resources>

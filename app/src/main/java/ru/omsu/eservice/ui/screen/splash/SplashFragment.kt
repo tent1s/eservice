@@ -28,6 +28,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
             startAnimation(animation)
             show()
         }
+        viewModel.onViewCreated()
     }
 
 }

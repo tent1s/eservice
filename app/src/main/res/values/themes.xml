@@ -23,7 +23,7 @@
 
 
     <style name="outlinedTextField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@drawable/box_color</item>
+        <item name="boxStrokeColor">@drawable/selector_box_color</item>
         <item name="boxCornerRadiusBottomEnd">15dp</item>
         <item name="boxCornerRadiusBottomStart">15dp</item>
         <item name="boxCornerRadiusTopEnd">15dp</item>

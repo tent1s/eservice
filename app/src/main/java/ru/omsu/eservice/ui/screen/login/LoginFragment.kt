@@ -1,7 +1,6 @@
 package ru.omsu.eservice.ui.screen.login
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -12,7 +11,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import ru.omsu.eservice.R
 import ru.omsu.eservice.databinding.FragmentLoginBinding
-import ru.omsu.eservice.ui.utils.*
+import ru.omsu.eservice.ui.utils.afterTextChangedInFocus
+import ru.omsu.eservice.ui.utils.hide
+import ru.omsu.eservice.ui.utils.launchWhenStart
+import ru.omsu.eservice.ui.utils.show
 
 
 @AndroidEntryPoint
@@ -62,12 +64,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
         binding.emailInput.afterTextChangedInFocus { binding.emailTextInputLayout.error = null }
         binding.passwordInput.afterTextChangedInFocus { binding.passwordTextInputLayout.error = null }
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        requireActivity().window?.setBackgroundDrawable(ColorDrawable(requireContext().color(R.color.white)))
     }
 
 
