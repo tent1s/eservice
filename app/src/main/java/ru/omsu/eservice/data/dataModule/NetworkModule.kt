@@ -3,7 +3,6 @@ package ru.omsu.eservice.data.dataModule
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import ru.omsu.eservice.BuildConfig
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -17,7 +16,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import ru.omsu.eservice.BuildConfig
 import ru.omsu.eservice.data.remote.common.ResultCallAdapterFactory
+import ru.omsu.eservice.data.remote.common.interceptor.DynamicUrlInterceptor
 import ru.omsu.eservice.data.remote.common.interceptor.GetDataFromHeaderInterceptor
 import ru.omsu.eservice.data.remote.common.interceptor.HandleErrorLoginInterceptor
 import ru.omsu.eservice.data.remote.login.repository.EServiceApi
@@ -45,6 +46,7 @@ class NetworkModule {
         cookieManager: CookieManager,
         @Named("GetDataFromHeaderInterceptor") getDataFromHeaderInterceptor: Interceptor,
         @Named("HandleErrorLoginInterceptor") handleErrorLoginInterceptor: Interceptor,
+        @Named("DynamicUrlInterceptor") dynamicUrlInterceptor: Interceptor,
         sslContext: SSLContext,
         trustAllCerts: Array<TrustManager>
     ) =
@@ -57,6 +59,7 @@ class NetworkModule {
                 })
             .addInterceptor(getDataFromHeaderInterceptor)
             .addInterceptor(handleErrorLoginInterceptor)
+            .addInterceptor(dynamicUrlInterceptor)
             .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
             .build()
 
@@ -77,16 +80,9 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideGoogleBookApi(
+    fun provideEServiceApi(
         retrofit: Retrofit
     ): EServiceApi = retrofit.create(EServiceApi::class.java)
-
-    @Singleton
-    @Provides
-    fun provideCookieManager(context: Context): CookieManager = CookieManager(
-        SharedPreferencesCookieStore(name = "myCookies", context = context),
-        CookiePolicy.ACCEPT_ALL
-    )
 
     @Named("GetDataFromHeaderInterceptor")
     @Singleton
@@ -100,17 +96,12 @@ class NetworkModule {
     fun provideHandleErrorLoginInterceptor(): Interceptor =
         HandleErrorLoginInterceptor()
 
+    @Named("DynamicUrlInterceptor")
     @Singleton
     @Provides
-    fun provideContext(app: Application): Context = app.applicationContext
+    fun provideDynamicUrlInterceptor(): Interceptor =
+        DynamicUrlInterceptor()
 
-    @Singleton
-    @Provides
-    fun provideSslContext(trustAllCerts: Array<TrustManager>): SSLContext {
-        val sslContext: SSLContext = SSLContext.getInstance("SSL")
-        sslContext.init(null, trustAllCerts, SecureRandom())
-        return sslContext
-    }
 
     @Singleton
     @Provides

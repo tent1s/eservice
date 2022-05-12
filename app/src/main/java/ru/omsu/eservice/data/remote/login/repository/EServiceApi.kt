@@ -1,9 +1,11 @@
 package ru.omsu.eservice.data.remote.login.repository
 
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 import ru.omsu.eservice.data.remote.login.entity.CsrfTokenNetwork
+import ru.omsu.eservice.data.remote.login.entity.UrlNetwork
 import ru.omsu.eservice.utils.Either
 import ru.omsu.eservice.utils.ErrorReason
 
@@ -20,6 +22,11 @@ interface EServiceApi {
     ): Either<ErrorReason, Unit>
 
 
-    @GET("/sinfo/backend/j_oauth_check?client_name=DasOAuth2Client&code=3c454S&state=72050baf79")
-    suspend fun loginBackend(): Either<ErrorReason, Unit>
+    @GET("/sinfo/backend/")
+    suspend fun getUrlForAuthEducationCard(): Either<ErrorReason, UrlNetwork>
+
+    @GET("")
+    suspend fun goToCustomUrl(
+        @Header("LocationRedirect") url: String
+    ) : Either<ErrorReason, UrlNetwork>
 }
