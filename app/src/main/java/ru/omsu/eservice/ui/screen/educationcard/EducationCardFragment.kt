@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
 import ru.omsu.eservice.R
+import ru.omsu.eservice.ui.utils.launchWhenStart
 
 @AndroidEntryPoint
 class EducationCardFragment : Fragment(R.layout.fragment_education_card) {
@@ -14,6 +16,8 @@ class EducationCardFragment : Fragment(R.layout.fragment_education_card) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.vv()
+        viewModel.educationCardState.onEach {
+            it
+        }.launchWhenStart(lifecycle)
     }
 }

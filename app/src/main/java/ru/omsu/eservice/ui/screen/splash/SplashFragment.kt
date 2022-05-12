@@ -1,5 +1,6 @@
 package ru.omsu.eservice.ui.screen.splash
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -18,9 +19,11 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
 
     private val viewModel: SplashViewModel by viewModels()
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val animation = requireActivity().getAnimation(R.anim.anim_fadein)
+        requireActivity().window?.setBackgroundDrawable(requireContext().getDrawable(R.drawable.ll_background))
         with(binding.loginButton) {
             setOnClickListener {
                 viewModel.nextScreenClick()

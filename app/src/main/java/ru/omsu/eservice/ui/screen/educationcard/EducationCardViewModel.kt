@@ -4,8 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.terrakok.cicerone.Router
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.omsu.eservice.domain.interactor.EducationCardUseCase
+import ru.omsu.eservice.domain.model.EducationGroupUi
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,10 +18,23 @@ class EducationCardViewModel @Inject constructor(
     private val educationCardUseCase: EducationCardUseCase
 ) : ViewModel() {
 
-    fun vv() {
+    init {
         viewModelScope.launch {
-            educationCardUseCase.educationCard()
+            educationCardUseCase
+            educationCardUseCase.educationCard().process(
+                {
+
+                },
+                {
+                    viewModelScope.launch {
+                       mutableEducationCardState.emit(it)
+                    }
+                }
+            )
         }
     }
+
+    private val mutableEducationCardState = MutableStateFlow<List<EducationGroupUi>>(listOf())
+    val educationCardState: StateFlow<List<EducationGroupUi>> = mutableEducationCardState.asStateFlow()
 
 }

@@ -6,5 +6,6 @@ import javax.inject.Inject
 class EducationCardUseCase @Inject constructor(
     private val educationCardRepository: EducationCardRepository
 ) {
-    suspend fun educationCard() = educationCardRepository.getToken()
+    suspend fun educationCard() = educationCardRepository.authAndGet()
+
 }

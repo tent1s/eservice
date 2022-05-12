@@ -5,6 +5,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 import ru.omsu.eservice.data.remote.login.entity.CsrfTokenNetwork
+import ru.omsu.eservice.data.remote.login.entity.EducationGroupNetwork
 import ru.omsu.eservice.data.remote.login.entity.UrlNetwork
 import ru.omsu.eservice.utils.Either
 import ru.omsu.eservice.utils.ErrorReason
@@ -29,4 +30,7 @@ interface EServiceApi {
     suspend fun goToCustomUrl(
         @Header("LocationRedirect") url: String
     ) : Either<ErrorReason, UrlNetwork>
+
+    @GET("sinfo/backend/myStudents")
+    suspend fun getEducationCard(): Either<ErrorReason, List<EducationGroupNetwork>>
 }

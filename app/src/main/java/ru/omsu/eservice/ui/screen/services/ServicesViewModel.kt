@@ -7,13 +7,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.omsu.eservice.ui.screen.Screens.educationCardScreen
+import ru.omsu.eservice.ui.screen.Screens.splashScreen
 import ru.omsu.eservice.ui.screen.services.model.ServiceItem
 import ru.omsu.eservice.ui.screen.services.model.Services
+import java.net.CookieManager
 import javax.inject.Inject
 
 @HiltViewModel
 class ServicesViewModel @Inject constructor(
-    private val router: Router
+    private val router: Router,
+    private val cookieManager: CookieManager
 ) : ViewModel() {
 
     private val mutableServiceState = MutableStateFlow(
@@ -46,6 +49,11 @@ class ServicesViewModel @Inject constructor(
         when (serviceItem.type) {
             Services.EDUCATION_CARD -> router.navigateTo(educationCardScreen())
         }
+    }
+
+    fun logout() {
+        if (cookieManager.cookieStore.removeAll())
+            router.newRootScreen(splashScreen())
     }
 
 }

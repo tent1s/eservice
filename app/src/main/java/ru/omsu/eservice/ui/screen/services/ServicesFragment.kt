@@ -33,6 +33,15 @@ class ServicesFragment : Fragment(R.layout.fragment_services), ServiceAdapter.On
         requireActivity().window?.setBackgroundDrawable(ColorDrawable(requireContext().color(R.color.white)))
         binding.serviceList.adapter = ServiceAdapter(this)
         binding.serviceList.itemAnimator = null
+        binding.materialToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.logout -> {
+                    viewModel.logout()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onShowMoreClicked(serviceItem: ServiceItem) {
