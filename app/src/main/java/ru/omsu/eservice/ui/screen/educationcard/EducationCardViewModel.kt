@@ -23,18 +23,32 @@ class EducationCardViewModel @Inject constructor(
             educationCardUseCase
             educationCardUseCase.educationCard().process(
                 {
-
+                    viewModelScope.launch {
+                        mutableEducationCardState.emit(EducationState.Error(it.message))
+                    }
                 },
                 {
                     viewModelScope.launch {
-                       mutableEducationCardState.emit(it)
+                        mutableEducationCardState.emit(EducationState.Data(it))
                     }
                 }
             )
         }
     }
 
-    private val mutableEducationCardState = MutableStateFlow<List<EducationGroupUi>>(listOf())
-    val educationCardState: StateFlow<List<EducationGroupUi>> = mutableEducationCardState.asStateFlow()
+    private val mutableEducationCardState = MutableStateFlow<EducationState>(EducationState.Loading)
+    val educationCardState: StateFlow<EducationState> =
+        mutableEducationCardState.asStateFlow()
+
+
+    sealed class EducationState {
+        object Loading : EducationState()
+        class Error(val errorMsg: String) : EducationState()
+        class Data(val educationGroupUi: List<EducationGroupUi>) : EducationState()
+    }
+
+    fun onBack() {
+        router.exit()
+    }
 
 }
