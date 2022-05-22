@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.omsu.eservice.R
 import ru.omsu.eservice.domain.model.EducationGroupUi
+import ru.omsu.eservice.domain.model.SemInfo
 
 class EducationViewPagerViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
@@ -24,6 +25,27 @@ class EducationViewPagerViewModel @AssistedInject constructor(
     private val mutableBaseInfoState =
         MutableStateFlow<List<Pair<Int, String>>>(createBaseInfoList())
     val baseInfoState: StateFlow<List<Pair<Int, String>>> = mutableBaseInfoState.asStateFlow()
+
+
+    private val mutableSemInfoState =
+        MutableStateFlow(cardInfoItem?.semInfo)
+    val baseSemInfoState: StateFlow<List<SemInfo>?> = mutableSemInfoState.asStateFlow()
+
+    private val mutableSemCountState =
+        MutableStateFlow(getSemCount())
+    val baseSemCountState: StateFlow<List<String>> = mutableSemCountState.asStateFlow()
+
+
+    private fun getSemCount(): MutableList<String> {
+        val list: MutableList<String> = mutableListOf()
+
+        cardInfoItem?.semInfo?.let { sems ->
+            sems.forEach {
+                list.add(it.number.toString())
+            }
+        }
+        return list
+    }
 
 
     private fun createBaseInfoList(): MutableList<Pair<Int, String>> {
