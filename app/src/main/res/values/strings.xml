@@ -14,4 +14,14 @@
     <string name="education_card_msg_more"> • Доступ к рабочим программам дисциплин/практик обучающего\n • Фиксация результатов промежуточной аттестации обучающегося\n • Фиксация хода образовательного процесса обучающегося\n • Список приказов по студенческому составу обучающегося\n • Документы и заявления обучающегося</string>
     <string name="more">Подробнее</string>
     <string name="logout">Выйти</string>
+    
+    <string name="base_info_card_fio">ФИО:</string>
+    <string name="base_info_card_birthday">Дата рождения:</string>
+    <string name="base_info_card_address">Адреса:</string>
+    <string name="base_info_card_faculty">Факультет:</string>
+    <string name="base_info_card_education_program">Образовательная программа:</string>
+    <string name="base_info_card_form_education">Форма обучения:</string>
+    <string name="base_info_card_course_education">Курс:</string>
+    <string name="base_info_card_financy">Финансирование:</string>
+    <string name="base_info_card_education_time">Срок обучения:</string>
 </resources>

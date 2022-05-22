@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
+        style="@style/Widget.Material3.CardView.Elevated"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/grayLight">
 
@@ -47,6 +48,8 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="24dp"
+                android:backgroundTint="@color/white"
+                style="@style/Widget.Material3.CardView.Elevated"
                 android:layout_marginTop="20dp"
                 app:cardCornerRadius="40dp"
                 app:cardElevation="10dp"
