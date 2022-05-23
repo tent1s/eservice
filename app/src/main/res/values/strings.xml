@@ -27,5 +27,10 @@
 
     <string name="education_program_table_name">Наименование</string>
     <string name="education_program_table_control_form">Форма контроля</string>
-    <string name="education_program_table_hour">Объём (часов)</string>
+    <string name="education_program_table_control_hours">Объём (часов)</string>
+    
+    <string name="education_program_block_title">Учебный план (аннотация)</string>
+    <string name="semest">%s семестр</string>
+
+    <string name="education_card_documents">Документы</string>
 </resources>

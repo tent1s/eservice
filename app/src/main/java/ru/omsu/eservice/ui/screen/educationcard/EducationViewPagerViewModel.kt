@@ -2,24 +2,25 @@ package ru.omsu.eservice.ui.screen.educationcard
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.omsu.eservice.R
 import ru.omsu.eservice.domain.model.EducationGroupUi
-import ru.omsu.eservice.domain.model.SemInfo
+import ru.omsu.eservice.domain.model.EntriesSeminar
+import javax.inject.Inject
 
-class EducationViewPagerViewModel @AssistedInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle
+@HiltViewModel
+class EducationViewPagerViewModel @Inject constructor(
+    bundle: SavedStateHandle,
 ) : ViewModel() {
 
     companion object {
         private const val EDUCATION_GROUP_UI = "educationGroupUi"
     }
 
-    private val cardInfoItem = savedStateHandle.get<EducationGroupUi>(EDUCATION_GROUP_UI)
+    private val cardInfoItem = bundle.get<EducationGroupUi>(EDUCATION_GROUP_UI)
 
 
     private val mutableBaseInfoState =
@@ -28,12 +29,19 @@ class EducationViewPagerViewModel @AssistedInject constructor(
 
 
     private val mutableSemInfoState =
-        MutableStateFlow(cardInfoItem?.semInfo)
-    val baseSemInfoState: StateFlow<List<SemInfo>?> = mutableSemInfoState.asStateFlow()
+        MutableStateFlow(cardInfoItem?.semInfo?.get(selectedSem)?.entries)
+    val baseSemInfoState: StateFlow<List<EntriesSeminar>?> = mutableSemInfoState.asStateFlow()
 
     private val mutableSemCountState =
         MutableStateFlow(getSemCount())
     val baseSemCountState: StateFlow<List<String>> = mutableSemCountState.asStateFlow()
+
+    private val mutableSemInfoVisibleState =
+        MutableStateFlow(false)
+    val baseSemInfoVisibleState: StateFlow<Boolean> = mutableSemInfoVisibleState.asStateFlow()
+
+    private var mutableSelectedSem = 0
+    val selectedSem: Int get() = mutableSelectedSem
 
 
     private fun getSemCount(): MutableList<String> {
@@ -41,7 +49,7 @@ class EducationViewPagerViewModel @AssistedInject constructor(
 
         cardInfoItem?.semInfo?.let { sems ->
             sems.forEach {
-                list.add(it.number.toString())
+                list.add(it.number.toString() + " семестр")
             }
         }
         return list
@@ -79,5 +87,16 @@ class EducationViewPagerViewModel @AssistedInject constructor(
         }
         return addresses
     }
+
+
+    fun selectSem(number: Int) {
+        mutableSelectedSem = number
+        mutableSemInfoState.value = cardInfoItem?.semInfo?.get(selectedSem)?.entries
+    }
+
+    fun setEducationVisibleState() {
+        mutableSemInfoVisibleState.value = !baseSemInfoVisibleState.value
+    }
+
 
 }

@@ -11,7 +11,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="900dp">
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView"
@@ -47,88 +48,15 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Widget.Material3.CardView.Elevated"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialCardView">
+            <include
+                android:id="@+id/educationCardPlan"
+                layout="@layout/view_education_plan_card" />
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+            <include
+                android:id="@+id/educationCardDocuments"
+                layout="@layout/view_education_card_documents" />
 
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/more"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/more"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/primaryColor"
-                        app:drawableRightCompat="@drawable/selector_expand_arrow"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/semNumberField"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@+id/more">
-
-                        <AutoCompleteTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/semsTextEdit"
-                            android:inputType="none" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <ir.androidexception.datatable.DataTable
-                        android:id="@+id/educationPlanTable"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="36dp"
-                        android:layout_marginHorizontal="16dp"
-                        app:header_horizontal_margin="4dp"
-                        app:row_horizontal_padding="4dp"
-                        app:corner_radius="8dp"
-                        app:direction="ltr"
-                        app:header_background_color="#fff"
-                        app:header_gravity="left"
-                        app:header_horizontal_padding="0dp"
-                        app:header_text_color="#000"
-                        app:header_text_size="6sp"
-                        app:header_vertical_padding="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/semNumberField"
-                        app:persian_number="false"
-                        app:row_background_color="#fff"
-                        app:row_gravity="left"
-                        app:row_text_color="#000"
-                        app:row_text_size="6sp"
-                        app:row_vertical_padding="16dp"
-                        app:shadow="4dp" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

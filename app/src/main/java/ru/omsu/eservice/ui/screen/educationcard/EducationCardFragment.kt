@@ -39,6 +39,8 @@ class EducationCardFragment : Fragment(R.layout.fragment_education_card) {
 
     private fun initViews(list: List<EducationGroupUi>) {
         binding.progressBar.hide()
+        if (binding.pager.offscreenPageLimit != -1) return
+        binding.pager.offscreenPageLimit = list.size
         binding.materialToolbar.setNavigationOnClickListener {
             viewModel.onBack()
         }
