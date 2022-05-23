@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.omsu.eservice.R
+import ru.omsu.eservice.domain.model.Documents
 import ru.omsu.eservice.domain.model.EducationGroupUi
 import ru.omsu.eservice.domain.model.EntriesSeminar
 import javax.inject.Inject
@@ -40,8 +41,16 @@ class EducationViewPagerViewModel @Inject constructor(
         MutableStateFlow(false)
     val baseSemInfoVisibleState: StateFlow<Boolean> = mutableSemInfoVisibleState.asStateFlow()
 
+    private val mutableBaseDocumentsVisibleState =
+        MutableStateFlow(false)
+    val baseDocumentsVisibleState: StateFlow<Boolean> = mutableBaseDocumentsVisibleState.asStateFlow()
+
     private var mutableSelectedSem = 0
     val selectedSem: Int get() = mutableSelectedSem
+
+    private val mutableDocumentsState =
+        MutableStateFlow(cardInfoItem?.documents)
+    val documentsState: StateFlow<List<Documents>?> = mutableDocumentsState.asStateFlow()
 
 
     private fun getSemCount(): MutableList<String> {
@@ -94,8 +103,12 @@ class EducationViewPagerViewModel @Inject constructor(
         mutableSemInfoState.value = cardInfoItem?.semInfo?.get(selectedSem)?.entries
     }
 
-    fun setEducationVisibleState() {
+    fun setEducationSemInfoVisibleState() {
         mutableSemInfoVisibleState.value = !baseSemInfoVisibleState.value
+    }
+
+    fun setEducationDocumentsVisibleState() {
+        mutableBaseDocumentsVisibleState.value = !baseDocumentsVisibleState.value
     }
 
 
