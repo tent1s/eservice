@@ -10,6 +10,7 @@ import ru.omsu.eservice.R
 import ru.omsu.eservice.domain.model.Documents
 import ru.omsu.eservice.domain.model.EducationGroupUi
 import ru.omsu.eservice.domain.model.EntriesSeminar
+import ru.omsu.eservice.domain.model.Sessions
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,12 +46,20 @@ class EducationViewPagerViewModel @Inject constructor(
         MutableStateFlow(false)
     val baseDocumentsVisibleState: StateFlow<Boolean> = mutableBaseDocumentsVisibleState.asStateFlow()
 
+    private val mutableSessionsVisibleState =
+        MutableStateFlow(false)
+    val sessionsVisibleState: StateFlow<Boolean> = mutableSessionsVisibleState.asStateFlow()
+
     private var mutableSelectedSem = 0
     val selectedSem: Int get() = mutableSelectedSem
 
     private val mutableDocumentsState =
         MutableStateFlow(cardInfoItem?.documents)
     val documentsState: StateFlow<List<Documents>?> = mutableDocumentsState.asStateFlow()
+
+    private val mutableSessionState =
+        MutableStateFlow(cardInfoItem?.sessions)
+    val sessionState: StateFlow<List<Sessions>?> = mutableSessionState.asStateFlow()
 
 
     private fun getSemCount(): MutableList<String> {
@@ -109,6 +118,10 @@ class EducationViewPagerViewModel @Inject constructor(
 
     fun setEducationDocumentsVisibleState() {
         mutableBaseDocumentsVisibleState.value = !baseDocumentsVisibleState.value
+    }
+
+    fun setSessionVisibleState() {
+        mutableSessionsVisibleState.value = !sessionsVisibleState.value
     }
 
 

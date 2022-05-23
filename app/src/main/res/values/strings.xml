@@ -33,4 +33,7 @@
     <string name="semest">%s семестр</string>
 
     <string name="education_card_documents">Документы</string>
+
+    <string name="education_card_entries">Оценки</string>
+    <string name="education_card_session">Семестр %s</string>
 </resources>

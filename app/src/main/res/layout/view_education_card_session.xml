@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
-    android:backgroundTint="@color/lightYellow"
     android:layout_marginTop="24dp"
     android:layout_marginEnd="16dp"
+    android:backgroundTint="@color/lightRed"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/educationCardPlan">
+    app:layout_constraintTop_toBottomOf="@+id/educationCardDocuments">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,14 +19,14 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/educationCardDocumentsMore"
+            android:id="@+id/educationCardSessionMore"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/education_card_documents"
+            android:text="@string/education_card_entries"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/cardview_dark_background"
             android:drawableTint="@color/cardview_dark_background"
@@ -37,26 +37,26 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/marginDocumentsView"
+            android:id="@+id/marginSessionView"
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/educationCardDocumentsMore" />
+            app:layout_constraintTop_toBottomOf="@+id/educationCardSessionMore" />
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/educationDocumentsTableRow"
+            android:id="@+id/educationSessionList"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/white"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/marginDocumentsView"
-            tools:itemCount="4"
             android:overScrollMode="never"
-            tools:listitem="@layout/item_education_document" />
+            app:layout_constraintTop_toBottomOf="@+id/marginSessionView"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_education_card_sessions" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

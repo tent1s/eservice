@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.omsu.eservice.databinding.ItemEducationDocumentBinding
-import ru.omsu.eservice.databinding.ItemEducationSemInfoRowBinding
 import ru.omsu.eservice.domain.model.Documents
 import ru.omsu.eservice.ui.utils.hide
 

@@ -14,9 +14,11 @@ import ru.omsu.eservice.databinding.FragmentEducationViewPagerBinding
 import ru.omsu.eservice.domain.model.Documents
 import ru.omsu.eservice.domain.model.EducationGroupUi
 import ru.omsu.eservice.domain.model.EntriesSeminar
+import ru.omsu.eservice.domain.model.Sessions
 import ru.omsu.eservice.ui.screen.educationcard.adapter.EducationCardBaseInfoAdapter
 import ru.omsu.eservice.ui.screen.educationcard.adapter.EducationDocumentsAdapter
 import ru.omsu.eservice.ui.screen.educationcard.adapter.EducationSemInfoRowAdapter
+import ru.omsu.eservice.ui.screen.educationcard.adapter.EducationSessionAdapter
 import ru.omsu.eservice.ui.utils.launchWhenStart
 import ru.omsu.eservice.ui.utils.setVisible
 
@@ -76,8 +78,18 @@ class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pag
             binding.educationCardDocuments.educationDocumentsTableRow.setVisible(it)
         }.launchWhenStart(lifecycle)
 
+        viewModel.sessionsVisibleState.onEach {
+            binding.educationCardSession.educationCardSessionMore.isSelected = it
+            binding.educationCardSession.educationSessionList.setVisible(it)
+        }.launchWhenStart(lifecycle)
+
+
         viewModel.documentsState.onEach {
             initDocumentsList(it)
+        }.launchWhenStart(lifecycle)
+
+        viewModel.sessionState.onEach {
+            initSessionList(it)
         }.launchWhenStart(lifecycle)
     }
 
@@ -93,6 +105,11 @@ class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pag
                 viewModel.setEducationDocumentsVisibleState()
             }
             educationCardDocuments.educationDocumentsTableRow.adapter = EducationDocumentsAdapter()
+            educationCardSession.educationSessionList.adapter = EducationSessionAdapter()
+            educationCardSession.educationSessionList.layoutManager?.isAutoMeasureEnabled = true
+            educationCardSession.educationCardSessionMore.setOnClickListener {
+                viewModel.setSessionVisibleState()
+            }
         }
     }
 
@@ -107,6 +124,11 @@ class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pag
 
     private fun initDocumentsList(list: List<Documents>?) {
         (binding.educationCardDocuments.educationDocumentsTableRow.adapter as? EducationDocumentsAdapter)
+            ?.submitList(list)
+    }
+
+    private fun initSessionList(list: List<Sessions>?) {
+        (binding.educationCardSession.educationSessionList.adapter as? EducationSessionAdapter)
             ?.submitList(list)
     }
 

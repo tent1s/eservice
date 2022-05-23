@@ -41,7 +41,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:itemCount="4"
-                        tools:listitem="@layout/item_base_info_education_card" />
+                        tools:listitem="@layout/item_education_card_base_info" />
 
                 </FrameLayout>
 
@@ -56,6 +56,10 @@
             <include
                 android:id="@+id/educationCardDocuments"
                 layout="@layout/view_education_card_documents" />
+
+            <include
+                android:id="@+id/educationCardSession"
+                layout="@layout/view_education_card_session"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.omsu.eservice.databinding.ItemEducationCardBaseInfoBinding
+import ru.omsu.eservice.databinding.ItemEducationCardEntriesBinding
+import ru.omsu.eservice.domain.model.Entries
 
-class EducationCardBaseInfoAdapter : ListAdapter<Pair<Int, String>,
-        EducationCardBaseInfoAdapter.ViewHolder>(BooksInfoDiffCallback()) {
+
+class EducationEntriesAdapter : ListAdapter<Entries,
+        EducationEntriesAdapter.ViewHolder>(BooksInfoDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -21,23 +23,22 @@ class EducationCardBaseInfoAdapter : ListAdapter<Pair<Int, String>,
 
 
     class ViewHolder private constructor(
-        private val binding: ItemEducationCardBaseInfoBinding,
+        private val binding: ItemEducationCardEntriesBinding,
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Pair<Int, String>) {
+        fun bind(item: Entries) {
             with(binding) {
-                title.setText(item.first)
-                content.text = item.second
+                title.text = item.subject
+                entries.text = item.result
             }
-
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding =
-                    ItemEducationCardBaseInfoBinding.inflate(layoutInflater, parent, false)
+                    ItemEducationCardEntriesBinding.inflate(layoutInflater, parent, false)
 
                 return ViewHolder(binding)
             }
@@ -45,17 +46,17 @@ class EducationCardBaseInfoAdapter : ListAdapter<Pair<Int, String>,
     }
 
 
-    class BooksInfoDiffCallback : DiffUtil.ItemCallback<Pair<Int, String>>() {
+    class BooksInfoDiffCallback : DiffUtil.ItemCallback<Entries>() {
         override fun areItemsTheSame(
-            oldItem: Pair<Int, String>,
-            newItem: Pair<Int, String>
+            oldItem: Entries,
+            newItem: Entries
         ): Boolean {
-            return oldItem.first == newItem.first
+            return oldItem.subject == newItem.subject
         }
 
         override fun areContentsTheSame(
-            oldItem: Pair<Int, String>,
-            newItem: Pair<Int, String>
+            oldItem: Entries,
+            newItem: Entries
         ): Boolean {
             return oldItem == newItem
         }
