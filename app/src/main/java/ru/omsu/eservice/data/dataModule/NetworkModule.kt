@@ -1,15 +1,12 @@
 package ru.omsu.eservice.data.dataModule
 
 import android.annotation.SuppressLint
-import android.app.Application
-import android.content.Context
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import net.gotev.cookiestore.SharedPreferencesCookieStore
 import net.gotev.cookiestore.okhttp.JavaNetCookieJar
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -23,8 +20,6 @@ import ru.omsu.eservice.data.remote.common.interceptor.GetDataFromHeaderIntercep
 import ru.omsu.eservice.data.remote.common.interceptor.HandleErrorLoginInterceptor
 import ru.omsu.eservice.data.remote.login.repository.EServiceApi
 import java.net.CookieManager
-import java.net.CookiePolicy
-import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import javax.inject.Named
 import javax.inject.Singleton

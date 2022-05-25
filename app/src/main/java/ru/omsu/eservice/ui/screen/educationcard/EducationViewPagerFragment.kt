@@ -15,16 +15,14 @@ import ru.omsu.eservice.domain.model.Documents
 import ru.omsu.eservice.domain.model.EducationGroupUi
 import ru.omsu.eservice.domain.model.EntriesSeminar
 import ru.omsu.eservice.domain.model.Sessions
-import ru.omsu.eservice.ui.screen.educationcard.adapter.EducationCardBaseInfoAdapter
-import ru.omsu.eservice.ui.screen.educationcard.adapter.EducationDocumentsAdapter
-import ru.omsu.eservice.ui.screen.educationcard.adapter.EducationSemInfoRowAdapter
-import ru.omsu.eservice.ui.screen.educationcard.adapter.EducationSessionAdapter
+import ru.omsu.eservice.ui.screen.educationcard.adapter.*
+import ru.omsu.eservice.ui.screen.educationcard.model.EducationOrderUi
 import ru.omsu.eservice.ui.utils.launchWhenStart
 import ru.omsu.eservice.ui.utils.setVisible
 
 
 @AndroidEntryPoint
-class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pager) {
+class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pager), OnClickListener {
 
     companion object {
 
@@ -83,6 +81,16 @@ class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pag
             binding.educationCardSession.educationSessionList.setVisible(it)
         }.launchWhenStart(lifecycle)
 
+        viewModel.ordersVisibleState.onEach {
+            binding.educationCardOrders.educationCardOrdersMore.isSelected = it
+            binding.educationCardOrders.educationDocumentsTableRow.setVisible(it)
+        }.launchWhenStart(lifecycle)
+
+
+        viewModel.ordersState.onEach {
+            initOrdersList(it)
+        }.launchWhenStart(lifecycle)
+
 
         viewModel.documentsState.onEach {
             initDocumentsList(it)
@@ -106,10 +114,13 @@ class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pag
             }
             educationCardDocuments.educationDocumentsTableRow.adapter = EducationDocumentsAdapter()
             educationCardSession.educationSessionList.adapter = EducationSessionAdapter()
-            educationCardSession.educationSessionList.layoutManager?.isAutoMeasureEnabled = true
             educationCardSession.educationCardSessionMore.setOnClickListener {
                 viewModel.setSessionVisibleState()
             }
+            educationCardOrders.educationCardOrdersMore.setOnClickListener {
+                viewModel.setOrdersVisibleState()
+            }
+            educationCardOrders.educationDocumentsTableRow.adapter = EducationOrdersAdapter(this@EducationViewPagerFragment)
         }
     }
 
@@ -130,6 +141,15 @@ class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pag
     private fun initSessionList(list: List<Sessions>?) {
         (binding.educationCardSession.educationSessionList.adapter as? EducationSessionAdapter)
             ?.submitList(list)
+    }
+
+    private fun initOrdersList(list: List<EducationOrderUi>?) {
+        (binding.educationCardOrders.educationDocumentsTableRow.adapter as? EducationOrdersAdapter)
+            ?.submitList(list)
+    }
+
+    override fun onShowMoreClicked(item: EducationOrderUi) {
+        viewModel.onShowMoreClicked(item)
     }
 
 }

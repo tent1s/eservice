@@ -6,4 +6,6 @@ import ru.omsu.eservice.utils.ErrorReason
 
 interface EducationCardRepository {
     suspend fun authAndGet(): Either<ErrorReason, List<EducationGroupUi>>
+
+    suspend fun moreInformationOrder(id: Int): Either<ErrorReason, String>
 }

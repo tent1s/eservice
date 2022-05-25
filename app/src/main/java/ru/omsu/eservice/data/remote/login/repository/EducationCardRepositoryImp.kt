@@ -26,9 +26,13 @@ class EducationCardRepositoryImp @Inject constructor(
         return educationCard()
     }
 
+    override suspend fun moreInformationOrder(id: Int): Either<ErrorReason, String> =
+        EServiceApi.moreInformationOrder(id)
+
     suspend fun educationCard(): Either<ErrorReason, List<EducationGroupUi>> =
         EServiceApi.getEducationCard().map { list ->
             list.map { educationCardMapper.map(it) }
         }
+
 
 }

@@ -31,4 +31,9 @@ interface EServiceApi {
     @Headers("CONNECT_TIMEOUT:120000", "READ_TIMEOUT:120000", "WRITE_TIMEOUT:120000")
     @GET("sinfo/backend/myStudents")
     suspend fun getEducationCard(): Either<ErrorReason, List<EducationGroupNetwork>>
+
+    @GET("sinfo/backend/decreeText")
+    suspend fun moreInformationOrder(
+        @Query("decreeId") id: Int
+    ): Either<ErrorReason, String>
 }

@@ -61,6 +61,10 @@
                 android:id="@+id/educationCardSession"
                 layout="@layout/view_education_card_session"/>
 
+            <include
+                android:id="@+id/educationCardOrders"
+                layout="@layout/view_education_card_orders"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -8,4 +8,5 @@ class EducationCardUseCase @Inject constructor(
 ) {
     suspend fun educationCard() = educationCardRepository.authAndGet()
 
+    suspend fun moreInformationOrder(id: Int) = educationCardRepository.moreInformationOrder(id)
 }

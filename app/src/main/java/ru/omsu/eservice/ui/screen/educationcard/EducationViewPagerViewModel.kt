@@ -2,20 +2,25 @@ package ru.omsu.eservice.ui.screen.educationcard
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import ru.omsu.eservice.R
+import ru.omsu.eservice.domain.interactor.EducationCardUseCase
 import ru.omsu.eservice.domain.model.Documents
 import ru.omsu.eservice.domain.model.EducationGroupUi
 import ru.omsu.eservice.domain.model.EntriesSeminar
 import ru.omsu.eservice.domain.model.Sessions
+import ru.omsu.eservice.ui.screen.educationcard.model.EducationOrderUi
+import ru.omsu.eservice.ui.screen.login.LoginViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class EducationViewPagerViewModel @Inject constructor(
     bundle: SavedStateHandle,
+    private val educationCardUseCase: EducationCardUseCase
 ) : ViewModel() {
 
     companion object {
@@ -50,6 +55,10 @@ class EducationViewPagerViewModel @Inject constructor(
         MutableStateFlow(false)
     val sessionsVisibleState: StateFlow<Boolean> = mutableSessionsVisibleState.asStateFlow()
 
+    private val mutableOrdersVisibleState =
+        MutableStateFlow(false)
+    val ordersVisibleState: StateFlow<Boolean> = mutableOrdersVisibleState.asStateFlow()
+
     private var mutableSelectedSem = 0
     val selectedSem: Int get() = mutableSelectedSem
 
@@ -60,6 +69,21 @@ class EducationViewPagerViewModel @Inject constructor(
     private val mutableSessionState =
         MutableStateFlow(cardInfoItem?.sessions)
     val sessionState: StateFlow<List<Sessions>?> = mutableSessionState.asStateFlow()
+
+    private val mutableError = MutableSharedFlow<String>()
+    val error: SharedFlow<String> = mutableError.asSharedFlow()
+
+    private val mutableOrdersState =
+        MutableStateFlow(cardInfoItem?.decrees?.map {
+            EducationOrderUi(
+                it.id,
+                "${it.number} ${it.about} \n${it.date}",
+            )
+        })
+    val ordersState: StateFlow<List<EducationOrderUi>?> = mutableOrdersState.asStateFlow()
+
+
+    private var getMoreInfoJob : Job? = null
 
 
     private fun getSemCount(): MutableList<String> {
@@ -124,5 +148,41 @@ class EducationViewPagerViewModel @Inject constructor(
         mutableSessionsVisibleState.value = !sessionsVisibleState.value
     }
 
+    fun setOrdersVisibleState() {
+        mutableOrdersVisibleState.value = !mutableOrdersVisibleState.value
+    }
+
+    fun onShowMoreClicked(item: EducationOrderUi) {
+        if (item.moreInformation.isNotEmpty()) {
+            mutableOrdersState.value?.let {
+                val tempList = it.toMutableList()
+                val index = it.indexOf(item)
+                if (tempList.getOrNull(index) == null) return
+                tempList[index] =
+                    tempList[index].copy(isShowingMore = !tempList[index].isShowingMore)
+                mutableOrdersState.value = tempList
+            }
+        } else {
+            getMoreInfoJob?.cancel()
+            getMoreInfoJob = viewModelScope.launch {
+                educationCardUseCase.moreInformationOrder(item.id!!).process(
+                    {
+                        viewModelScope.launch { mutableError.emit(it.message) }
+                    },
+                    { moreInfo ->
+                        mutableOrdersState.value?.let {
+                            val tempList = it.toMutableList()
+                            val index = it.indexOf(item)
+                            if (tempList.getOrNull(index) == null) return@let
+                            tempList[index] =
+                                tempList[index].copy(isShowingMore = !tempList[index].isShowingMore, moreInformation = moreInfo)
+                            mutableOrdersState.value = tempList
+                        }
+                        Unit
+                    }
+                )
+            }
+        }
+    }
 
 }
