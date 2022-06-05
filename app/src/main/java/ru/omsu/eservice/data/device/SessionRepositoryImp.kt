@@ -2,13 +2,15 @@ package ru.omsu.eservice.data.device
 
 import android.content.SharedPreferences
 import net.gotev.cookiestore.removeAll
+import ru.omsu.eservice.data.device.database.EducationCardDao
 import ru.omsu.eservice.domain.repository.SessionRepository
 import javax.inject.Inject
 import java.net.CookieManager
 
 class SessionRepositoryImp @Inject constructor(
     private val sharedPreferences: SharedPreferences,
-    private val cookieManager: CookieManager
+    private val cookieManager: CookieManager,
+    private val educationCardDao: EducationCardDao
 ) : SessionRepository {
 
     companion object {
@@ -25,6 +27,7 @@ class SessionRepositoryImp @Inject constructor(
             remove(SESSION_FLAG)
             apply()
         }
+        educationCardDao.clear()
     }
 
     override fun newSessionBeCreated() {

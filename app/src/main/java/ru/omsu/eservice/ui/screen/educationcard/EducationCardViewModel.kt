@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.terrakok.cicerone.Router
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.omsu.eservice.data.device.database.EducationCardDao
 import ru.omsu.eservice.domain.interactor.EducationCardUseCase
 import ru.omsu.eservice.domain.model.EducationGroupUi
 import javax.inject.Inject
@@ -15,16 +17,21 @@ import javax.inject.Inject
 @HiltViewModel
 class EducationCardViewModel @Inject constructor(
     private val router: Router,
-    private val educationCardUseCase: EducationCardUseCase
+    private val educationCardUseCase: EducationCardUseCase,
+    private val educationCardDao: EducationCardDao
 ) : ViewModel() {
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             educationCardUseCase
             educationCardUseCase.educationCard().process(
                 {
-                    viewModelScope.launch {
+                    viewModelScope.launch(Dispatchers.IO) {
                         mutableEducationCardState.emit(EducationState.Error(it.message))
+
+                        mutableEducationCardState.emit(EducationState.Data(educationCardDao.getAll().map {
+                            it.educationGroupUi
+                        }))
                     }
                 },
                 {

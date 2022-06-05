@@ -8,6 +8,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import net.gotev.cookiestore.SharedPreferencesCookieStore
+import ru.omsu.eservice.data.device.database.EServiceDatabase
+import ru.omsu.eservice.data.device.database.EducationCardDao
 import java.net.CookieManager
 import java.net.CookiePolicy
 import java.security.SecureRandom
@@ -46,5 +48,10 @@ class DeviceModule {
     @Singleton
     fun provideSharedPreferences(app: Application): SharedPreferences =
         app.getSharedPreferences(MAIN_SHARED_PREF_KEY, Context.MODE_PRIVATE)
+
+    @Provides
+    @Singleton
+    fun provideEducationCardDao(context: Context): EducationCardDao =
+        EServiceDatabase.getInstance(context).educationCardDao
 
 }
