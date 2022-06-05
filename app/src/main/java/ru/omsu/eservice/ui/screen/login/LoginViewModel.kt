@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.omsu.eservice.R
 import ru.omsu.eservice.domain.interactor.LoginUseCase
+import ru.omsu.eservice.domain.repository.SessionRepository
 import ru.omsu.eservice.ui.screen.Screens.servicesScreen
 import ru.omsu.eservice.ui.utils.isEmail
 import javax.inject.Inject
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val router: Router
+    private val router: Router,
+    private val session: SessionRepository
 ) : ViewModel() {
 
     private val mutableLoadingState = MutableStateFlow(false)
@@ -44,6 +46,7 @@ class LoginViewModel @Inject constructor(
                 {
                     mutableLoadingState.value = false
                     router.replaceScreen(servicesScreen())
+                    session.newSessionBeCreated()
                 }
             )
         }

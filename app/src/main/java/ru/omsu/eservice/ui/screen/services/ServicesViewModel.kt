@@ -6,17 +6,17 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import ru.omsu.eservice.domain.repository.SessionRepository
 import ru.omsu.eservice.ui.screen.Screens.educationCardScreen
 import ru.omsu.eservice.ui.screen.Screens.splashScreen
 import ru.omsu.eservice.ui.screen.services.model.ServiceItem
 import ru.omsu.eservice.ui.screen.services.model.Services
-import java.net.CookieManager
 import javax.inject.Inject
 
 @HiltViewModel
 class ServicesViewModel @Inject constructor(
     private val router: Router,
-    private val cookieManager: CookieManager
+    private val session: SessionRepository
 ) : ViewModel() {
 
     private val mutableServiceState = MutableStateFlow(
@@ -52,8 +52,8 @@ class ServicesViewModel @Inject constructor(
     }
 
     fun logout() {
-        if (cookieManager.cookieStore.removeAll())
-            router.newRootScreen(splashScreen())
+        session.clear()
+        router.newRootScreen(splashScreen())
     }
 
 }

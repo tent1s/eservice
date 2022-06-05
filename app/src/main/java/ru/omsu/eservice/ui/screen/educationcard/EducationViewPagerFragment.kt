@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -17,12 +18,13 @@ import ru.omsu.eservice.domain.model.EntriesSeminar
 import ru.omsu.eservice.domain.model.Sessions
 import ru.omsu.eservice.ui.screen.educationcard.adapter.*
 import ru.omsu.eservice.ui.screen.educationcard.model.EducationOrderUi
+import ru.omsu.eservice.ui.utils.launchUrl
 import ru.omsu.eservice.ui.utils.launchWhenStart
 import ru.omsu.eservice.ui.utils.setVisible
 
 
 @AndroidEntryPoint
-class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pager), OnClickListener {
+class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pager), OnClickListener, OnSemInfoClickListener {
 
     companion object {
 
@@ -99,13 +101,21 @@ class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pag
         viewModel.sessionState.onEach {
             initSessionList(it)
         }.launchWhenStart(lifecycle)
+
+        viewModel.error.onEach {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        }.launchWhenStart(lifecycle)
+
+        viewModel.openPdf.onEach {
+            requireActivity().launchUrl(it)
+        }.launchWhenStart(lifecycle)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
             baseInfoRecycler.adapter = EducationCardBaseInfoAdapter()
-            educationCardPlan.educationPlanTableRow.adapter = EducationSemInfoRowAdapter()
+            educationCardPlan.educationPlanTableRow.adapter = EducationSemInfoRowAdapter(this@EducationViewPagerFragment)
             educationCardPlan.educationPlanCardMore.setOnClickListener {
                 viewModel.setEducationSemInfoVisibleState()
             }
@@ -121,6 +131,9 @@ class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pag
                 viewModel.setOrdersVisibleState()
             }
             educationCardOrders.educationDocumentsTableRow.adapter = EducationOrdersAdapter(this@EducationViewPagerFragment)
+            scheduleCard.setOnClickListener {
+                viewModel.scheduleClicked()
+            }
         }
     }
 
@@ -150,6 +163,10 @@ class EducationViewPagerFragment : Fragment(R.layout.fragment_education_view_pag
 
     override fun onShowMoreClicked(item: EducationOrderUi) {
         viewModel.onShowMoreClicked(item)
+    }
+
+    override fun onObjectPdfClicked(item: EntriesSeminar) {
+        viewModel.openObjectPdf(item.rpd)
     }
 
 }

@@ -2,6 +2,7 @@ package ru.omsu.eservice.data.dataModule
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +18,10 @@ import javax.net.ssl.TrustManager
 @Module
 @InstallIn(SingletonComponent::class)
 class DeviceModule {
+
+    companion object {
+        const val MAIN_SHARED_PREF_KEY = "App Preferences"
+    }
 
     @Singleton
     @Provides
@@ -36,5 +41,10 @@ class DeviceModule {
         SharedPreferencesCookieStore(name = "myCookies", context = context),
         CookiePolicy.ACCEPT_ALL
     )
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(app: Application): SharedPreferences =
+        app.getSharedPreferences(MAIN_SHARED_PREF_KEY, Context.MODE_PRIVATE)
 
 }

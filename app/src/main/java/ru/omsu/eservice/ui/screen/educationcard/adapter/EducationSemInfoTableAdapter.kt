@@ -9,7 +9,7 @@ import ru.omsu.eservice.databinding.ItemEducationSemInfoRowBinding
 import ru.omsu.eservice.domain.model.EntriesSeminar
 
 
-class EducationSemInfoRowAdapter : ListAdapter<EntriesSeminar,
+class EducationSemInfoRowAdapter(private val selectListener: OnSemInfoClickListener) : ListAdapter<EntriesSeminar,
         EducationSemInfoRowAdapter.ViewHolder>(BooksInfoDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -19,11 +19,12 @@ class EducationSemInfoRowAdapter : ListAdapter<EntriesSeminar,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder.from(parent)
+        ViewHolder.from(parent, selectListener)
 
 
     class ViewHolder private constructor(
         private val binding: ItemEducationSemInfoRowBinding,
+        private val selectListener: OnSemInfoClickListener
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -32,17 +33,20 @@ class EducationSemInfoRowAdapter : ListAdapter<EntriesSeminar,
                 title.text = item.discipline
                 contentt.text = item.controlForm
                 content.text = item.length.toString()
+                root.setOnClickListener {
+                    selectListener.onObjectPdfClicked(item)
+                }
             }
 
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, selectListener: OnSemInfoClickListener): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding =
                     ItemEducationSemInfoRowBinding.inflate(layoutInflater, parent, false)
 
-                return ViewHolder(binding)
+                return ViewHolder(binding, selectListener)
             }
         }
     }
@@ -63,4 +67,8 @@ class EducationSemInfoRowAdapter : ListAdapter<EntriesSeminar,
             return oldItem == newItem
         }
     }
+}
+
+interface OnSemInfoClickListener {
+    fun onObjectPdfClicked(item: EntriesSeminar)
 }

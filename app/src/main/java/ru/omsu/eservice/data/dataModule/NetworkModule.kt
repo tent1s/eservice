@@ -1,6 +1,7 @@
 package ru.omsu.eservice.data.dataModule
 
 import android.annotation.SuppressLint
+import com.github.terrakok.cicerone.Router
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -19,6 +20,7 @@ import ru.omsu.eservice.data.remote.common.interceptor.DynamicUrlInterceptor
 import ru.omsu.eservice.data.remote.common.interceptor.GetDataFromHeaderInterceptor
 import ru.omsu.eservice.data.remote.common.interceptor.HandleErrorLoginInterceptor
 import ru.omsu.eservice.data.remote.login.repository.EServiceApi
+import ru.omsu.eservice.domain.repository.SessionRepository
 import java.net.CookieManager
 import java.security.cert.X509Certificate
 import javax.inject.Named
@@ -88,8 +90,8 @@ class NetworkModule {
     @Named("HandleErrorLoginInterceptor")
     @Singleton
     @Provides
-    fun provideHandleErrorLoginInterceptor(): Interceptor =
-        HandleErrorLoginInterceptor()
+    fun provideHandleErrorLoginInterceptor(router: Router, sessionRepository: SessionRepository): Interceptor =
+        HandleErrorLoginInterceptor(router, sessionRepository)
 
     @Named("DynamicUrlInterceptor")
     @Singleton

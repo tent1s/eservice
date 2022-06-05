@@ -1,5 +1,6 @@
 package ru.omsu.eservice.ui.screen.educationcard
 
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,6 @@ import ru.omsu.eservice.domain.model.EducationGroupUi
 import ru.omsu.eservice.domain.model.EntriesSeminar
 import ru.omsu.eservice.domain.model.Sessions
 import ru.omsu.eservice.ui.screen.educationcard.model.EducationOrderUi
-import ru.omsu.eservice.ui.screen.login.LoginViewModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -72,6 +72,9 @@ class EducationViewPagerViewModel @Inject constructor(
 
     private val mutableError = MutableSharedFlow<String>()
     val error: SharedFlow<String> = mutableError.asSharedFlow()
+
+    private val mutableOpenPdf = MutableSharedFlow<Uri>()
+    val openPdf: SharedFlow<Uri> = mutableOpenPdf.asSharedFlow()
 
     private val mutableOrdersState =
         MutableStateFlow(cardInfoItem?.decrees?.map {
@@ -150,6 +153,18 @@ class EducationViewPagerViewModel @Inject constructor(
 
     fun setOrdersVisibleState() {
         mutableOrdersVisibleState.value = !mutableOrdersVisibleState.value
+    }
+
+    fun scheduleClicked() {
+        viewModelScope.launch {
+            cardInfoItem?.scheduleUrl?.let { mutableOpenPdf.emit(Uri.parse(it)) }
+        }
+    }
+
+    fun openObjectPdf(id: String?) {
+        viewModelScope.launch {
+            id?.let { mutableOpenPdf.emit(Uri.parse("https://eservice.omsu.ru/publish/rp/$id".trim())) }
+        }
     }
 
     fun onShowMoreClicked(item: EducationOrderUi) {
