@@ -14,6 +14,7 @@ import ru.omsu.eservice.ui.screen.services.model.ServiceItem
 import ru.omsu.eservice.ui.utils.color
 import ru.omsu.eservice.ui.utils.launchWhenStart
 
+
 @AndroidEntryPoint
 class ServicesFragment : Fragment(R.layout.fragment_services), ServiceAdapter.OnClickListener {
 

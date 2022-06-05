@@ -1,6 +1,9 @@
 package ru.omsu.eservice.data.remote.common.interceptor
 
 import com.github.terrakok.cicerone.Router
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 import okhttp3.Response
 import ru.omsu.eservice.domain.repository.SessionRepository
@@ -22,7 +25,9 @@ class HandleErrorLoginInterceptor(
             response.request.url.toString() == "https://eservice.omsu.ru/dasext/login" -> {
                 if (session.hasSession()) {
                     router.newRootScreen(splashScreen())
-                    session.clear()
+                    GlobalScope.launch(Dispatchers.IO) {
+                        session.clear()
+                    }
                     response
                         .newBuilder()
                         .code(401)

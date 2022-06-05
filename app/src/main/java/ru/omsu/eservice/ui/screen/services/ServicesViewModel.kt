@@ -1,11 +1,14 @@
 package ru.omsu.eservice.ui.screen.services
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.terrakok.cicerone.Router
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import ru.omsu.eservice.domain.repository.SessionRepository
 import ru.omsu.eservice.ui.screen.Screens.educationCardScreen
 import ru.omsu.eservice.ui.screen.Screens.splashScreen
@@ -52,7 +55,9 @@ class ServicesViewModel @Inject constructor(
     }
 
     fun logout() {
-        session.clear()
+        viewModelScope.launch(Dispatchers.IO) {
+            session.clear()
+        }
         router.newRootScreen(splashScreen())
     }
 

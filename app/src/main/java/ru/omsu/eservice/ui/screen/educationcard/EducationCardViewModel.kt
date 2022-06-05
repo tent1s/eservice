@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.omsu.eservice.data.device.database.EducationCardDao
+import ru.omsu.eservice.data.device.database.EducationCardData
 import ru.omsu.eservice.domain.interactor.EducationCardUseCase
 import ru.omsu.eservice.domain.model.EducationGroupUi
 import javax.inject.Inject
@@ -23,7 +24,6 @@ class EducationCardViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            educationCardUseCase
             educationCardUseCase.educationCard().process(
                 {
                     viewModelScope.launch(Dispatchers.IO) {
@@ -35,8 +35,11 @@ class EducationCardViewModel @Inject constructor(
                     }
                 },
                 {
-                    viewModelScope.launch {
+                    viewModelScope.launch(Dispatchers.IO) {
                         mutableEducationCardState.emit(EducationState.Data(it))
+                        educationCardDao.insert(it.map {
+                            EducationCardData(it.summary?.group.orEmpty(), it)
+                        })
                     }
                 }
             )
