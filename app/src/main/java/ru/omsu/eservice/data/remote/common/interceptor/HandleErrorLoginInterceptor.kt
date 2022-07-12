@@ -22,7 +22,8 @@ class HandleErrorLoginInterceptor(
                     .code(400)
                     .build()
             }
-            response.request.url.toString() == "https://eservice.omsu.ru/dasext/login" -> {
+            response.request.url.toString() == "https://eservice.omsu.ru/dasext/login"
+                    && !response.request.url.toString().contains("?error") -> {
                 if (session.hasSession()) {
                     router.newRootScreen(splashScreen())
                     GlobalScope.launch(Dispatchers.IO) {

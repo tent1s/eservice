@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="24dp"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/primaryColor"
         app:layout_constraintBottom_toTopOf="@+id/appCompatImageView"

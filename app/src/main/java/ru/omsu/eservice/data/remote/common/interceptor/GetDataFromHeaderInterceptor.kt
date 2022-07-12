@@ -14,6 +14,7 @@ class GetDataFromHeaderInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
+        if (response.request.url.toString().contains("?error")) return response
         val hasCsrfToken = !response.headers[CSRF_TOKEN_HEADER_NAME].isNullOrEmpty()
         val hasLocationUrl = !response.headers[LOCATION_REDIRECT_URL].isNullOrEmpty()
         return when {

@@ -23,6 +23,7 @@ import ru.omsu.eservice.data.remote.login.repository.EServiceApi
 import ru.omsu.eservice.domain.repository.SessionRepository
 import java.net.CookieManager
 import java.security.cert.X509Certificate
+import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 import javax.net.ssl.SSLContext
@@ -54,6 +55,8 @@ class NetworkModule {
                     level =
                         HttpLoggingInterceptor.Level.BODY
                 })
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(getDataFromHeaderInterceptor)
             .addInterceptor(handleErrorLoginInterceptor)
             .addInterceptor(dynamicUrlInterceptor)

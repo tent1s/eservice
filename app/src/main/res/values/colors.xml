@@ -8,8 +8,8 @@
     <color name="textDark">#DE000000</color>
     <color name="gray">#dedede</color>
     <color name="grayLight">#f1ffff</color>
-    <color name="lightYellow">#50FFFF66</color>
-    <color name="lightGreen">#50339966</color>
-    <color name="lightRed">#50FF3333</color>
-    <color name="lightPurple">#509900CC</color>
+    <color name="lightYellow">#ffffbf</color>
+    <color name="lightGreen">#ace3c8</color>
+    <color name="lightRed">#ffc7c7</color>
+    <color name="lightPurple">#e390ff</color>
 </resources>

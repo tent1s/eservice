@@ -13,8 +13,6 @@ import ru.omsu.eservice.domain.model.Sessions
 class EducationSessionAdapter : ListAdapter<Sessions,
         EducationSessionAdapter.ViewHolder>(BooksInfoDiffCallback()) {
 
-    private val adapter = EducationEntriesAdapter()
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
 
@@ -22,14 +20,15 @@ class EducationSessionAdapter : ListAdapter<Sessions,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder.from(parent, adapter)
+        ViewHolder.from(parent)
 
 
     class ViewHolder private constructor(
-        private val binding: ItemEducationCardSessionsBinding,
-        private val adapter: EducationEntriesAdapter,
+        private val binding: ItemEducationCardSessionsBinding
     ) :
         RecyclerView.ViewHolder(binding.root) {
+
+        private val adapter = EducationEntriesAdapter()
 
         fun bind(item: Sessions) {
             with(binding) {
@@ -41,12 +40,12 @@ class EducationSessionAdapter : ListAdapter<Sessions,
         }
 
         companion object {
-            fun from(parent: ViewGroup, adapter : EducationEntriesAdapter): ViewHolder {
+            fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding =
                     ItemEducationCardSessionsBinding.inflate(layoutInflater, parent, false)
 
-                return ViewHolder(binding, adapter)
+                return ViewHolder(binding)
             }
         }
     }
